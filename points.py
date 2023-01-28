@@ -1,4 +1,4 @@
-#!./venv/bin/python3.8
+#!/usr/bin/env python3.8
 
 import numbers
 from math import (
@@ -10,6 +10,7 @@ from math import (
 )
 from pprint import (
     pformat,
+    pprint,
 )
 
 
@@ -51,7 +52,7 @@ class Vector3D:
         else:
             raise TypeError
 
-    def tupla(self) -> str:
+    def tuple(self) -> str:
         return (
             self.x,
             self.y,
@@ -61,8 +62,8 @@ class Vector3D:
     def distance(self, p2):
         try:
             return dist(
-                self.tupla(),
-                p2.tupla(),
+                self.tuple(),
+                p2.tuple(),
             )
         except Exception:
             raise TypeError
@@ -77,21 +78,56 @@ class Vector3D:
         except Exception:
             raise TypeError
 
-    def angles_distance(self, yaw, pitch, distance):
+    def angles_distance(self, yaw, pitch, distance=1):
         return self + self.unitary_angles(yaw, pitch) * distance
         
 
-s1 = Vector3D(0, 0, 0)
-s2 = Vector3D(1, 1, 1)
+class RegularOctahedron():
+    """Regular polyhedron formed by 12 edges, 6 vertices, and 8 faces
+    """
 
-print('distance')
-print(s1.distance(s2))
+    def __init__(self, x, y, z, edge_length):
+        self.x = float(x)
+        self.y = float(y)
+        self.z = float(z)
+        self.edge_length = float(edge_length)
 
-print('unitary_angles')
-print(0, 0, s1.unitary_angles(0, 0))
-print(30, 0, s1.unitary_angles(pi/2/3, 0))
-print(90, 0, s1.unitary_angles(pi/2, 0))
-print(90, 90, s1.unitary_angles(pi/2, pi/2))
+        self.calc_vertices()
 
-print('angles_distance')
-print(0, 0, 10, s1.angles_distance(0, 0, 10))
+    def calc_vertices(self):
+        half = self.edge_length / 2
+        v1 = (half, half, 0)
+        v2 = (-half, half, 0)
+        v3 = (-half, -half, 0)
+        v4 = (half, -half, 0)
+        v5 = Vector3D(*v1).angles_distance(0, pi/2).tuple()
+        v6 = (Vector3D(*v5) * -1).tuple()
+        self.vertices= [
+            v1,
+            v2,
+            v3,
+            v4,
+            v5,
+            v6,
+        ]
+
+
+if __name__ == '__main__':
+    s1 = Vector3D(0, 0, 0)
+    s2 = Vector3D(1, 1, 1)
+
+    print('distance')
+    print(s1.distance(s2))
+
+    print('unitary_angles')
+    print(0, 0, s1.unitary_angles(0, 0))
+    print(30, 0, s1.unitary_angles(pi/2/3, 0))
+    print(90, 0, s1.unitary_angles(pi/2, 0))
+    print(90, 90, s1.unitary_angles(pi/2, pi/2))
+
+    print('angles_distance')
+    print(0, 0, 10, s1.angles_distance(0, 0, 10))
+
+    ro = RegularOctahedron(0, 0, 0, 1)
+    print('vertices')
+    pprint(ro.vertices)
