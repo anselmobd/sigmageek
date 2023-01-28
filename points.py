@@ -68,7 +68,8 @@ class Vector3D:
         except Exception:
             raise TypeError
     
-    def unitary_angles(self, yaw, pitch):
+    def unitvec_rads(self, yaw, pitch):
+        """Unit vector generated from yaw and pitch angles"""
         try:
             return Vector3D(
                 cos(yaw) * cos(pitch),
@@ -78,8 +79,9 @@ class Vector3D:
         except Exception:
             raise TypeError
 
-    def angles_distance(self, yaw, pitch, distance=1):
-        return self + self.unitary_angles(yaw, pitch) * distance
+    def vec_rads_length(self, yaw, pitch, length=1):
+        """Vector generated from unitvec_rads times length"""
+        return self.unitvec_rads(yaw, pitch) * length
         
 
 class RegularOctahedron():
@@ -100,7 +102,7 @@ class RegularOctahedron():
         v2 = (-half, half, 0)
         v3 = (-half, -half, 0)
         v4 = (half, -half, 0)
-        v5 = Vector3D(*v1).angles_distance(0, pi/2).tuple()
+        v5 = Vector3D(*v1).vec_rads_length(0, pi/2).tuple()
         v6 = (Vector3D(*v5) * -1).tuple()
         self.vertices= [
             v1,
@@ -120,13 +122,13 @@ if __name__ == '__main__':
     print(s1.distance(s2))
 
     print('unitary_angles')
-    print(0, 0, s1.unitary_angles(0, 0))
-    print(30, 0, s1.unitary_angles(pi/2/3, 0))
-    print(90, 0, s1.unitary_angles(pi/2, 0))
-    print(90, 90, s1.unitary_angles(pi/2, pi/2))
+    print(0, 0, s1.unitvec_rads(0, 0))
+    print(30, 0, s1.unitvec_rads(pi/2/3, 0))
+    print(90, 0, s1.unitvec_rads(pi/2, 0))
+    print(90, 90, s1.unitvec_rads(pi/2, pi/2))
 
     print('angles_distance')
-    print(0, 0, 10, s1.angles_distance(0, 0, 10))
+    print(0, 0, 10, s1.vec_rads_length(0, 0, 10))
 
     ro = RegularOctahedron(0, 0, 0, 1)
     print('vertices')
