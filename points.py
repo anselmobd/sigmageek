@@ -59,6 +59,13 @@ class Vector3D:
             self.z,
         )
 
+    def copy(self) -> str:
+        return Vector3D(
+            self.x,
+            self.y,
+            self.z,
+        )
+
     def distance(self, p2):
         try:
             return dist(
@@ -136,15 +143,24 @@ if __name__ == '__main__':
     print('distance')
     print(s1.distance(s2))
 
-    print('unitary_angles')
+    print('unitvec_rads')
     print(0, 0, s1.unitvec_rads(0, 0))
     print(30, 0, s1.unitvec_rads(pi/2/3, 0))
     print(90, 0, s1.unitvec_rads(pi/2, 0))
     print(90, 90, s1.unitvec_rads(pi/2, pi/2))
+    print('unitvec_degs')
+    print(90, 90, s1.unitvec_degs(90, 90))
+    print(45, 45, s1.unitvec_degs(45, 45))
 
-    print('angles_distance')
-    print(0, 0, 10, s1.vec_rads_length(0, 0, 10))
+    print('vec_rads_length')
+    print(45, 45, 10, s1.vec_degs_length(45, 45, 10))
 
     ro = RegularOctahedron(0, 0, 0, 1)
     print('vertices')
     pprint(ro.vertices)
+
+    print(s2)
+    s3 = s2.copy()
+    s3.x = 11
+    print(s3)
+    print(s2)
