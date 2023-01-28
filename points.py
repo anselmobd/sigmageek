@@ -30,6 +30,8 @@ class Vector3D:
             round(self.z, self.round),
         ))
 
+    __repr__ = __str__
+
     def __mul__(self, mult):
         if isinstance(mult, numbers.Number):
             return Vector3D(
