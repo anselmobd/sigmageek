@@ -140,6 +140,7 @@ class RegularOctahedron():
         self.edge_length = float(edge_length)
 
         self.vertices = self.calc_vertices()
+        self.faces = self.calc_faces()
 
     def calc_vertices(self):
         half = self.edge_length / 2
@@ -159,6 +160,17 @@ class RegularOctahedron():
         v[6] = v[5] * -1
         return v
 
+    def calc_faces(self):
+        return {
+            1: [self.vertices[1], self.vertices[2], self.vertices[5]],
+            2: [self.vertices[2], self.vertices[3], self.vertices[5]],
+            3: [self.vertices[3], self.vertices[4], self.vertices[5]],
+            4: [self.vertices[4], self.vertices[1], self.vertices[5]],
+            5: [self.vertices[1], self.vertices[2], self.vertices[6]],
+            6: [self.vertices[2], self.vertices[3], self.vertices[6]],
+            7: [self.vertices[3], self.vertices[4], self.vertices[6]],
+            8: [self.vertices[4], self.vertices[1], self.vertices[6]],
+        }
 
 if __name__ == '__main__':
     s1 = Vector3D(0, 0, 0)
@@ -188,3 +200,4 @@ if __name__ == '__main__':
     ro = RegularOctahedron(0, 0, 0, 1)
     print('vertices')
     pprint(ro.vertices)
+    pprint(ro.faces)
