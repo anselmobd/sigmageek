@@ -129,6 +129,12 @@ def triangle_bcB(b, c, B):
     return (a, b, c, A, B, C)
 
 
+def triangle_center(va, vb, vc):
+    v = []
+    for a, b, c in zip(va.astuple(), vb.astuple(), vc.astuple()):
+        v.append((a + b + c) / 3)
+    return Vector3D(*v)
+
 class RegularOctahedron():
     """Regular polyhedron formed by 12 edges, 6 vertices, and 8 faces
     """
@@ -141,6 +147,7 @@ class RegularOctahedron():
 
         self.vertices = self.calc_vertices()
         self.faces = self.calc_faces()
+        self.centers = self.calc_faces_centers()
 
     def calc_vertices(self):
         half = self.edge_length / 2
@@ -172,6 +179,14 @@ class RegularOctahedron():
             8: [self.vertices[4], self.vertices[1], self.vertices[6]],
         }
 
+    def calc_faces_centers(self):
+        centers = []
+        for f_id in self.faces:
+            centers.append(
+                triangle_center(
+                    *self.faces[f_id]))
+        return centers
+
 if __name__ == '__main__':
     s1 = Vector3D(0, 0, 0)
     s2 = Vector3D(1, 1, 1)
@@ -201,3 +216,10 @@ if __name__ == '__main__':
     print('vertices')
     pprint(ro.vertices)
     pprint(ro.faces)
+    pprint(ro.centers)
+
+    points = [
+        *ro.vertices.values(),
+        *ro.centers,
+    ]
+    pprint(points)
