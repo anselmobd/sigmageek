@@ -139,24 +139,25 @@ class RegularOctahedron():
         self.z = float(z)
         self.edge_length = float(edge_length)
 
-        self.calc_vertices()
+        self.vertices = self.calc_vertices()
 
     def calc_vertices(self):
         half = self.edge_length / 2
-        v1 = (half, half, 0)
-        v2 = (-half, half, 0)
-        v3 = (-half, -half, 0)
-        v4 = (half, -half, 0)
-        v5 = Vector3D(*v1).vec_rads_length(0, pi/2).tuple()
-        v6 = (Vector3D(*v5) * -1).tuple()
-        self.vertices= [
-            v1,
-            v2,
-            v3,
-            v4,
-            v5,
-            v6,
-        ]
+        v = {}
+        v[1] = Vector3D(half, half, 0)
+        v[2] = Vector3D(-half, half, 0)
+        v[3] = Vector3D(-half, -half, 0)
+        v[4] = Vector3D(half, -half, 0)
+
+        origin_v1 = v[1].distance(Vector3D())
+        v1_top = self.edge_length
+        v1_top_angle = 90
+        triang = triangle_bcB(v1_top, origin_v1, v1_top_angle)
+        top_origin = triang[2]
+        v[5] = Vector3D(0, 0, top_origin)
+
+        v[6] = v[5] * -1
+        return v
 
 
 if __name__ == '__main__':
