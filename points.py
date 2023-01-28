@@ -142,6 +142,12 @@ if __name__ == '__main__':
     s1 = Vector3D(0, 0, 0)
     s2 = Vector3D(1, 1, 1)
 
+    print(s2)
+    s3 = s2.copy()
+    s3.x = 11
+    print(s3)
+    print(s2)
+
     print('distance')
     print(s1.distance(s2))
 
@@ -160,9 +166,3 @@ if __name__ == '__main__':
     ro = RegularOctahedron(0, 0, 0, 1)
     print('vertices')
     pprint(ro.vertices)
-
-    print(s2)
-    s3 = s2.copy()
-    s3.x = 11
-    print(s3)
-    print(s2)
