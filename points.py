@@ -195,24 +195,24 @@ def get_plane(v1, v2, v3):
     A = np.array(v1.astuple())
     B = np.array(v2.astuple())
     C = np.array(v3.astuple())
-    print('A B C')
-    pprint(A)
-    pprint(B)
-    pprint(C)
+    # print('A B C')
+    # pprint(A)
+    # pprint(B)
+    # pprint(C)
     u = B - A
     v = C - A
-    print('u v')
-    pprint(u)
-    pprint(v)
+    # print('u v')
+    # pprint(u)
+    # pprint(v)
     n = np.cross(u, v)
-    print('multipliers')
-    pprint(n)
+    # print('multipliers')
+    # pprint(n)
     (a, b, c) = n
     if not n.any():
         raise ValueError
     d = np.dot(n, A)
-    print('d')
-    pprint(d)
+    # print('d')
+    # pprint(d)
     result = (a, b, c, d)
     return result
 
@@ -230,7 +230,16 @@ def in_plane(plane, point):
 
 
 def count_tetrahedrons(points):
-    return len(list(combinations(points, 4)))
+    count = 0
+    for comb in combinations(points, 4):
+        try:
+            plane = get_plane(comb[0], comb[1], comb[2])
+        except ValueError:
+            continue
+        if not in_plane(plane, comb[3]):
+            count += 1
+    return count
+
 
 
 if __name__ == '__main__':
@@ -261,9 +270,9 @@ if __name__ == '__main__':
 
     ro = RegularOctahedron(0, 0, 0, 1)
     # print('vertices')
-    pprint(ro.vertices)
-    pprint(ro.faces)
-    pprint(ro.centers)
+    # pprint(ro.vertices)
+    # pprint(ro.faces)
+    # pprint(ro.centers)
 
     points = [
         *ro.vertices.values(),
@@ -273,39 +282,39 @@ if __name__ == '__main__':
 
     print(count_tetrahedrons(points))
 
-    try:
-        plane = get_plane(s1, s2, s3)
-        pprint(plane)
-    except ValueError:
-        print('Not a plane')
+    # try:
+    #     plane = get_plane(s1, s2, s3)
+    #     pprint(plane)
+    # except ValueError:
+    #     print('Not a plane')
 
-    print('face')
-    s1 = Vector3D(0.5, 0.5, 0.0)
-    s2 = Vector3D(-0.5, 0.5, 0.0)
-    s3 = Vector3D(0.0, 0.0, 0.70711)
-    s4 = Vector3D(0.0, 0.33333, 0.2357)
-    try:
-        plane = get_plane(s1, s2, s3)
-        pprint(plane)
-    except ValueError:
-        print('Not a plane')
-    print(in_plane(plane, s4))
-    print(s4)
+    # print('face')
+    # s1 = Vector3D(0.5, 0.5, 0.0)
+    # s2 = Vector3D(-0.5, 0.5, 0.0)
+    # s3 = Vector3D(0.0, 0.0, 0.70711)
+    # s4 = Vector3D(0.0, 0.33333, 0.2357)
+    # try:
+    #     plane = get_plane(s1, s2, s3)
+    #     pprint(plane)
+    # except ValueError:
+    #     print('Not a plane')
+    # print(in_plane(plane, s4))
+    # print(s4)
 
-    print('manual')
-    s1 = Vector3D(1, 0, 1)
-    s2 = Vector3D(0, 1, 1)
-    s3 = Vector3D(0, 0, 1)
-    s4 = Vector3D(1, 1, 0)
-    s5 = Vector3D(1, 1, 1)
-    try:
-        plane = get_plane(s1, s2, s3)
-        pprint(plane)
-    except ValueError:
-        print('Not a plane')
+    # print('manual')
+    # s1 = Vector3D(1, 0, 1)
+    # s2 = Vector3D(0, 1, 1)
+    # s3 = Vector3D(0, 0, 1)
+    # s4 = Vector3D(1, 1, 0)
+    # s5 = Vector3D(1, 1, 1)
+    # try:
+    #     plane = get_plane(s1, s2, s3)
+    #     pprint(plane)
+    # except ValueError:
+    #     print('Not a plane')
 
-    print(in_plane(plane, s1))
-    print(in_plane(plane, s2))
-    print(in_plane(plane, s3))
-    print(in_plane(plane, s4))
-    print(in_plane(plane, s5))
+    # print(in_plane(plane, s1))
+    # print(in_plane(plane, s2))
+    # print(in_plane(plane, s3))
+    # print(in_plane(plane, s4))
+    # print(in_plane(plane, s5))
