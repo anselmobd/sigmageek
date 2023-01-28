@@ -195,41 +195,35 @@ def get_plane(v1, v2, v3):
     A = np.array(v1.astuple())
     B = np.array(v2.astuple())
     C = np.array(v3.astuple())
-    # print('A B C')
-    # pprint(A)
-    # pprint(B)
-    # pprint(C)
     u = B - A
     v = C - A
-    # print('u v')
-    # pprint(u)
-    # pprint(v)
     n = np.cross(u, v)
-    # print('multipliers')
-    # pprint(n)
     (a, b, c) = n
     if not n.any():
         raise ValueError
     d = np.dot(n, A)
-    # print('d')
-    # pprint(d)
     result = (a, b, c, d)
     return result
 
 
 def in_plane(plane, point):
-    # print('inplane')
-    # pprint(plane)
-    # print(point)
     calc = 0
-    # print(calc)
     for pl, po in zip(plane[:3], point.astuple()):
         calc += pl * po
-        # print(calc)
     return round(calc, 3) == round(plane[3], 3)
 
+def sorted_edges_lengths(t):
+    lengths = []
+    lengths.append(round(t[0].distance(t[1]), 3))
+    lengths.append(round(t[0].distance(t[2]), 3))
+    lengths.append(round(t[0].distance(t[3]), 3))
+    lengths.append(round(t[1].distance(t[2]), 3))
+    lengths.append(round(t[1].distance(t[3]), 3))
+    lengths.append(round(t[2].distance(t[3]), 3))
+    return tuple(sorted(lengths))
 
 def count_tetrahedrons(points):
+    tetra = set()
     count = 0
     for comb in combinations(points, 4):
         try:
@@ -238,83 +232,18 @@ def count_tetrahedrons(points):
             continue
         if not in_plane(plane, comb[3]):
             count += 1
-    return count
-
+            key = sorted_edges_lengths(comb)
+            tetra.add(key)
+    return count, len(tetra)
 
 
 if __name__ == '__main__':
-    s1 = Vector3D(0, 0, 0)
-    s2 = Vector3D(1, 1, 1)
-    s3 = Vector3D(1, 2, 3)
-
-    # print(s2)
-    # s3 = s2.copy()
-    # s3.x = 11
-    # print(s3)
-    # print(s2)
-
-    # print('distance')
-    # print(s1.distance(s2))
-
-    # print('unitvec_rads')
-    # print(0, 0, s1.unitvec_rads(0, 0))
-    # print(30, 0, s1.unitvec_rads(pi/2/3, 0))
-    # print(90, 0, s1.unitvec_rads(pi/2, 0))
-    # print(90, 90, s1.unitvec_rads(pi/2, pi/2))
-    # print('unitvec_degs')
-    # print(90, 90, s1.unitvec_degs(90, 90))
-    # print(45, 45, s1.unitvec_degs(45, 45))
-
-    # print('vec_rads_length')
-    # print(45, 45, 10, s1.vec_degs_length(45, 45, 10))
-
     ro = RegularOctahedron(0, 0, 0, 1)
-    # print('vertices')
-    # pprint(ro.vertices)
-    # pprint(ro.faces)
-    # pprint(ro.centers)
 
     points = [
         *ro.vertices.values(),
         *ro.centers,
     ]
-    pprint(points)
 
-    print(count_tetrahedrons(points))
-
-    # try:
-    #     plane = get_plane(s1, s2, s3)
-    #     pprint(plane)
-    # except ValueError:
-    #     print('Not a plane')
-
-    # print('face')
-    # s1 = Vector3D(0.5, 0.5, 0.0)
-    # s2 = Vector3D(-0.5, 0.5, 0.0)
-    # s3 = Vector3D(0.0, 0.0, 0.70711)
-    # s4 = Vector3D(0.0, 0.33333, 0.2357)
-    # try:
-    #     plane = get_plane(s1, s2, s3)
-    #     pprint(plane)
-    # except ValueError:
-    #     print('Not a plane')
-    # print(in_plane(plane, s4))
-    # print(s4)
-
-    # print('manual')
-    # s1 = Vector3D(1, 0, 1)
-    # s2 = Vector3D(0, 1, 1)
-    # s3 = Vector3D(0, 0, 1)
-    # s4 = Vector3D(1, 1, 0)
-    # s5 = Vector3D(1, 1, 1)
-    # try:
-    #     plane = get_plane(s1, s2, s3)
-    #     pprint(plane)
-    # except ValueError:
-    #     print('Not a plane')
-
-    # print(in_plane(plane, s1))
-    # print(in_plane(plane, s2))
-    # print(in_plane(plane, s3))
-    # print(in_plane(plane, s4))
-    # print(in_plane(plane, s5))
+    count, diff = count_tetrahedrons(points)
+    print(count)
