@@ -55,7 +55,7 @@ class Vector3D:
         else:
             raise TypeError
 
-    def tuple(self) -> str:
+    def astuple(self) -> str:
         return (
             self.x,
             self.y,
@@ -72,8 +72,8 @@ class Vector3D:
     def distance(self, p2):
         try:
             return dist(
-                self.tuple(),
-                p2.tuple(),
+                self.astuple(),
+                p2.astuple(),
             )
         except Exception:
             raise TypeError
