@@ -2,6 +2,7 @@
 
 import numbers
 from math import (
+    asin,
     cos,
     dist,
     pi,
@@ -106,6 +107,26 @@ class Vector3D:
     def vec_degs_length(self, yaw, pitch, length=1):
         """Vector generated from unitvec_degs times length"""
         return self.unitvec_degs(yaw, pitch) * length
+
+
+def deg2rad(degree):
+    """Degrees to radians"""
+    return degree * pi / 180
+
+
+def rad2deg(radian):
+    """Radians to degrees"""
+    return radian * 180 / pi
+
+
+def triangle_bcB(b, c, B):
+    Br = deg2rad(B)
+    Cr = asin(c * sin(B) / b)
+    Ar = pi - Br - Cr
+    a = b * sin(Ar) / sin(Br)
+    C = rad2deg(Cr)
+    A = rad2deg(Ar)
+    return (a, b, c, A, B, C)
 
 
 class RegularOctahedron():
