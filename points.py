@@ -68,6 +68,10 @@ class Vector3D:
         except Exception:
             raise TypeError
     
+    def degree2rad(self, degree):
+        """Degrees to radians"""
+        return degree * pi / 180
+
     def unitvec_rads(self, yaw, pitch):
         """Unit vector generated from yaw and pitch angles"""
         try:
@@ -79,10 +83,21 @@ class Vector3D:
         except Exception:
             raise TypeError
 
+    def unitvec_degs(self, yaw, pitch):
+        """unitvec_rads working with degrees"""
+        return self.unitvec_rads(
+            self.degree2rad(yaw),
+            self.degree2rad(pitch),
+        )
+
     def vec_rads_length(self, yaw, pitch, length=1):
         """Vector generated from unitvec_rads times length"""
         return self.unitvec_rads(yaw, pitch) * length
         
+    def vec_degs_length(self, yaw, pitch, length=1):
+        """Vector generated from unitvec_degs times length"""
+        return self.unitvec_degs(yaw, pitch) * length
+
 
 class RegularOctahedron():
     """Regular polyhedron formed by 12 edges, 6 vertices, and 8 faces
