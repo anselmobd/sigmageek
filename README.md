@@ -1,2 +1,2 @@
-# sigmageek_upmat
-Sigma Geek - UpMat - Polyhedral Computational Challenge
+# sigmageek
+Sigma Geek - Challenges
